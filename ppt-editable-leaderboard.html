@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerPoint Leaderboard Template</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 1920px;
+            height: 1080px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            position: relative;
+            transform-origin: top left;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0 30px 0;
+        }
+
+        .header h1 {
+            color: #fbbf24;
+            font-size: 72px;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.7);
+            font-weight: bold;
+        }
+
+        .table-container {
+            padding: 0 60px;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 100px 220px 180px 180px 180px 180px 180px 180px 140px;
+            gap: 12px;
+            padding: 20px 30px;
+            background: rgba(59, 130, 246, 0.5);
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .header-cell {
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .table-body {
+            max-height: 800px;
+            overflow-y: auto;
+        }
+
+        .table-body::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .table-body::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .table-body::-webkit-scrollbar-thumb {
+            background: rgba(251, 191, 36, 0.6);
+            border-radius: 10px;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 100px 220px 180px 180px 180px 180px 180px 180px 140px;
+            gap: 12px;
+            padding: 18px 30px;
+            background: rgba(30, 58, 138, 0.6);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .table-row:hover {
+            background: rgba(59, 130, 246, 0.5);
+            border-color: #fbbf24;
+            transform: translateX(5px);
+        }
+
+        .cell {
+            color: white;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .rank {
+            color: #fbbf24;
+            font-weight: bold;
+            font-size: 28px;
+            justify-content: center;
+        }
+
+        .total {
+            color: #fbbf24;
+            font-weight: bold;
+            font-size: 24px;
+            justify-content: center;
+        }
+
+        .editable-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 18px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .editable-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #fbbf24;
+        }
+
+        .editable-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .number-input {
+            text-align: center;
+        }
+
+        .instructions {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            max-width: 400px;
+            z-index: 1000;
+        }
+
+        .instructions h3 {
+            color: #fbbf24;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            line-height: 1.6;
+        }
+
+        .export-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1e3c72;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(251, 191, 36, 0.6);
+        }
+
+        @media screen and (max-width: 1920px) {
+            .slide {
+                transform: scale(0.8);
+            }
+        }
+
+        @media screen and (max-width: 1536px) {
+            .slide {
+                transform: scale(0.6);
+            }
+        }
+
+        @media screen and (max-width: 1152px) {
+            .slide {
+                transform: scale(0.5);
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="export-btn" onclick="exportToImage()">📸 Export for PowerPoint</button>
+    
+    <div class="instructions" id="instructions">
+        <h3>📋 How to Use:</h3>
+        <ol>
+            <li>Fill in your data below</li>
+            <li>Click "Export for PowerPoint"</li>
+            <li>Right-click the new tab and "Save As"</li>
+            <li>Insert the image into PowerPoint</li>
+            <li>Add text boxes on top to make it editable!</li>
+        </ol>
+        <p style="margin-top: 10px; font-size: 12px; color: #fbbf24;">Or just screenshot this page!</p>
+    </div>
+
+    <div class="slide" id="slide">
+        <div class="header">
+            <h1>🏆 LEADERBOARD 🏆</h1>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <div class="header-cell">RANK</div>
+                <div class="header-cell">NAME</div>
+                <div class="header-cell">REGION</div>
+                <div class="header-cell">WEBSITE</div>
+                <div class="header-cell">DIGITAL AD</div>
+                <div class="header-cell">PRODUCT PROT.</div>
+                <div class="header-cell">CONSUMER FIN.</div>
+                <div class="header-cell">CC PROCESS</div>
+                <div class="header-cell">TOTAL</div>
+            </div>
+
+            <div class="table-body" id="tableBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // Generate table rows
+        function generateTable() {
+            const tableBody = document.getElementById('tableBody');
+            
+            for (let i = 1; i <= 20; i++) {
+                const row = document.createElement('div');
+                row.className = 'table-row';
+                row.innerHTML = `
+                    <div class="cell rank">${String(i).padStart(2, '0')}</div>
+                    <div class="cell">
+                        <input type="text" class="editable-input" placeholder="Enter name" id="name-${i}">
+                    </div>
+                    <div class="cell">
+                        <input type="text" class="editable-input" placeholder="Region" id="region-${i}">
+                    </div>
+                    <div class="cell">
+                        <input type="number" class="editable-input number-input" value="0" id="web-${i}">
+                    </div>
+                    <div class="cell">
+                        <input type="number" class="editable-input number-input" value="0" id="digital-${i}">
+                    </div>
+                    <div class="cell">
+                        <input type="number" class="editable-input number-input" value="0" id="product-${i}">
+                    </div>
+                    <div class="cell">
+                        <input type="number" class="editable-input number-input" value="0" id="consumer-${i}">
+                    </div>
+                    <div class="cell">
+                        <input type="number" class="editable-input number-input" value="0" id="cc-${i}">
+                    </div>
+                    <div class="cell total" id="total-${i}">0</div>
+                `;
+                tableBody.appendChild(row);
+
+                // Add event listeners for auto-calculation
+                ['web', 'digital', 'product', 'consumer', 'cc'].forEach(field => {
+                    const input = document.getElementById(`${field}-${i}`);
+                    input.addEventListener('input', () => calculateTotal(i));
+                });
+            }
+        }
+
+        function calculateTotal(row) {
+            const fields = ['web', 'digital', 'product', 'consumer', 'cc'];
+            let total = 0;
+            
+            fields.forEach(field => {
+                const value = parseFloat(document.getElementById(`${field}-${row}`).value) || 0;
+                total += value;
+            });
+            
+            document.getElementById(`total-${row}`).textContent = total;
+        }
+
+        function exportToImage() {
+            // Hide instructions for export
+            document.getElementById('instructions').style.display = 'none';
+            document.querySelector('.export-btn').style.display = 'none';
+
+            alert('Right-click anywhere and select "Save Page As" or take a screenshot!\n\nPress F11 for fullscreen, then:\n- Windows: Win + Shift + S\n- Mac: Cmd + Shift + 4\n\nClick OK to continue...');
+            
+            // Show them again after a moment
+            setTimeout(() => {
+                document.getElementById('instructions').style.display = 'block';
+                document.querySelector('.export-btn').style.display = 'block';
+            }, 5000);
+        }
+
+        // Initialize
+        generateTable();
+
+        // Scale slide to fit window
+        function scaleSlide() {
+            const slide = document.getElementById('slide');
+            const scale = Math.min(
+                window.innerWidth / 1920,
+                window.innerHeight / 1080
+            );
+            slide.style.transform = `scale(${scale})`;
+        }
+
+        window.addEventListener('resize', scaleSlide);
+        scaleSlide();
+    </script>
+</body>
+</html>
